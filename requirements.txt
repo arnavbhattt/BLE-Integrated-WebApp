@@ -1,5 +1,4 @@
 dash==1.21.0
 paho-mqtt==1.5.1
 plotly==5.1.0
-dash-bootstrap-components==0.13.0
 bleak==0.11.0
