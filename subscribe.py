@@ -5,12 +5,12 @@ import paho.mqtt.client as mqtt
 import subprocess
 #----------------------------------
 from dash import Dash, html, dcc, Input, Output, State
-import dash_bootstrap_components as dbc
 from collections import deque
 from datetime import datetime
 import plotly.graph_objects as go
 #----------------------------------
-global current_emg1, current_emg2 # add as many emg values depending on application needs
+# Add as many emg values depending on application needs
+global current_emg1, current_emg2
 current_emg1 = "NaN"
 current_emg2 = "NaN"
 
@@ -68,7 +68,7 @@ mqttc.loop_start()
 app = Dash(__name__, external_stylesheets=external_stylesheets, update_title=None)
 app.title = "PRS Health Monitoring System"
 
-
+# Add as many sections needed for graph
 app.layout = html.Div(
     children=[
         html.Div(
@@ -179,6 +179,7 @@ app.layout = html.Div(
 # -----------------------------------------------------------------------------
 # Callback for updating temperature data
 # -----------------------------------------------------------------------------
+# Each graph requires a callback (add more depending on number of graphs)
 @app.callback(
     Output('ble-test1-graph', 'figure'),
     Input('ble-test1-interval', 'n_intervals'),
