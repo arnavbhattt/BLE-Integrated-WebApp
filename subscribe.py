@@ -24,7 +24,6 @@ external_stylesheets = [
     },
 ]
 
-
 # Initializing our Time (x) and EMG (y) data structures
 time_Values1 = deque(maxlen=20)
 emg_Values1 = deque(maxlen=20)
@@ -38,6 +37,7 @@ emg_Values2 = deque(maxlen=20)
 mqttc = mqtt.Client()
 mqttc.connect("mqtt.eclipseprojects.io", 1883, 60)
 
+# Runs the publish.py script as a background process (to continuously deliver data)
 def run_publish():
     subprocess.Popen(['python3', 'publish.py'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
