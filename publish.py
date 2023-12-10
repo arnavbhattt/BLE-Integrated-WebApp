@@ -32,7 +32,7 @@ async def connect_to_ble_device(device_name):
 
     except Exception as e:
         print(f"Error: {e}")
-        return None
+        return Non
 
 
 async def read_ble_and_publish_mqtt(client, characteristic_uuid, mqtt_topic):
