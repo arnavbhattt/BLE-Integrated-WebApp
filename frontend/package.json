@@ -1,0 +1,15 @@
+{
+    "name": "ble-integrated-webapp",
+    "version": "1.0.0",
+    "description": "A web application to read and display live sensor data using bluetooth low-energy",
+    "main": "subscribe.py",
+    "scripts": {
+      "start": "python3 subscribe.py"
+    },
+    "dependencies": {
+      "dash": "^2.0.0",
+      "plotly": "^5.0.0",
+      "paho-mqtt": "^1.5.0"
+    }
+  }
+  
