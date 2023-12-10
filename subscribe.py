@@ -2,6 +2,7 @@
 # Importing the modules
 # -----------------------------------------------------------------------------
 import paho.mqtt.client as mqtt
+import subprocess
 #----------------------------------
 from dash import Dash, html, dcc, Input, Output, State
 import dash_bootstrap_components as dbc
@@ -37,10 +38,14 @@ emg_Values2 = deque(maxlen=20)
 mqttc = mqtt.Client()
 mqttc.connect("mqtt.eclipseprojects.io", 1883, 60)
 
+def run_publish():
+    subprocess.Popen(['python3', 'publish.py'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
 def on_connect(client, userdata, flags, rc):
     print("Connected with result code "+str(rc))
     mqttc.subscribe("sensor/emg1")
     mqttc.subscribe("sensor/emg2")
+    run_publish()
 
 def on_message(client, userdata, msg):
     global current_emg1, current_emg2
