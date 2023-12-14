@@ -8,7 +8,7 @@ This project is a Python-based MQTT (Message Queuing Telemetry Transport) system
 
 ## **Getting Started**
 1. Clone or download the project to your local machine.
-2, Install the required Python packages by running pip install -r requirements.txt.
+2, Install the required Python packages by running `pip install -r requirements.txt`.
 3. Modify the characteristic UUIDs in the publish.py script as needed. If using the BLE Scanner app, set up the device by adding "Advertiser," navigating to "BLE Device," and modifying the "Custom Services." Each service has a specific UUID, which is represented in the publish.py script. Change the service property of each to "Read/Write" for testing.
 
 ## **Project Structure**
