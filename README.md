@@ -21,9 +21,9 @@ This project is a Python-based MQTT (Message Queuing Telemetry Transport) system
 
 **How to Use Locally**
 1. Open a terminal or command prompt and navigate to the project directory.
-2. Run 'pip install -r requirements.txt' to install Python dependencies, if not already.
-3. Run 'npm install' to install Node.js dependencies.
-5. Run 'node app.js' to start the web application.
+2. Run `pip install -r requirements.txt` to install Python dependencies, if not already.
+3. Run `npm install` to install Node.js dependencies.
+5. Run `node app.js` to start the web application.
 6. Before running the application, make sure that the device is turned on and ready to connect. Additionally, make sure the Device Name and all UUIDs in the publish.py script match the device's.
 7. While the application is running, it will display values from those certain UUIDs in real-time. To send data values from the "BLE Scanner" app, navigate the to specific service UUID, tap on "SetValue?", select "Text", and enter any decimal value (ideally from 0.00 to 5.00).
 
