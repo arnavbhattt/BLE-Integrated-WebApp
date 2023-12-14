@@ -19,22 +19,23 @@ This project is a Python-based MQTT (Message Queuing Telemetry Transport) system
 * package.json: Configuration file for managing Node.js dependencies.
 * requirements.txt: List of Python dependencies.
 
-**How to Use**
-1. Open a terminal or command prompt and navigate to the directory containing the script.
-2. Run the script using python Automate.py.
-
-3. 
+**How to Use Locally**
+1. Open a terminal or command prompt and navigate to the project directory.
+2. Run 'pip install -r requirements.txt' to install Python dependencies, if not already.
+3. Run 'npm install' to install Node.js dependencies.
+5. Run 'node app.js' to start the web application.
+6. Before running the application, make sure that the device is turned on and ready to connect. Additionally, make sure the Device Name and all UUIDs in the publish.py script match the device's.
+7. While the application is running, it will display values from those certain UUIDs in real-time. To send data values from the "BLE Scanner" app, navigate the to specific service UUID, tap on "SetValue?", select "Text", and enter any decimal value (ideally from 0.00 to 5.00).
 
 **Functionality**
-1. Login: The script will prompt you to enter your LinkedIn email or phone number and password. It will then log in to your LinkedIn account.
-2. Filter Company Links: The script will ask you to enter the name of a company you are interested in. It will search for the company on Google and navigate to its LinkedIn page. Currently, it searches for people related to the "recruitment" keyword on the company page.
-3. Retrieve People Links: The script will extract the links to the profiles of people related to the recruitment keyword and store them in a list. This list is stored in a SQL database, that can then be exported into an Excel file as per the user's command.
-4. Detect Closed Window: The script continuously checks if the browser window is closed by the user, and if so, it terminates the script.
+* The application initially connects to the Bluetooth low-energy device using the Bleak Python library. This allows it to work with all BLE characteristics from that device.
+* BleakScanner then reads the value sent to the specific UUID.
+* Such data is then sent to the Eclipse Mosquitto (MQTT) Broker, which continuously publishes to the stream of data requests.
+* This is a subprocess (which runs in the background) to the subscribe.py script.
+* subscribe.py subscribes from the MQTT Broker and sends that data to the respective callback function of the Dash graph.
+* This process is repeated until the user/device stops sending data.
 
-**SQL Database Schema**   
-
-employees(    
-&ensp; &nbsp; &nbsp;first_name TEXT,  
-&ensp; &nbsp; &nbsp;last_name TEXT,  
-&ensp; &nbsp; &nbsp;job_title TEXT,  
-&ensp; &nbsp; &nbsp;profile_url TEXT);  
+**Important Notes**
+* Ensure that the BLE device is ready for connection when running subscribe.py.
+* Check the specified BLE device information and adjust it in the code if needed.
+* The package.json file manages the Node.js dependencies for running the web application.
