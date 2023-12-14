@@ -4,12 +4,12 @@ This project is a Python-based MQTT (Message Queuing Telemetry Transport) system
 **Prerequisites**
 1. Python 3.x is required to run the script.
 2. Install the required Python packages by running the command below.
-3. Have a Bluetooth low-energy device or peripheral available for connection. "BLE Scanner" is an IOS app that allows iPhone to act as such a BLE peripheral.
+3. Have a Bluetooth low-energy device or peripheral available for connection. "BLE Scanner" is an IOS app that allows the iPhone to act as a BLE peripheral.
 
 **Getting Started**
 1. Clone or download the project to your local machine.
 2, Install the required Python packages by running pip install -r requirements.txt.
-3. Modify the characteristic uuids in the publish.py script as needed. If using the BLE Scanner app, set up device by adding "Advertiser," navigating to "BLE Device," and modifying the "Custom Services." Each service has a specific uuid, which is represented in the publish.py script.
+3. Modify the characteristic UUIDs in the publish.py script as needed. If using the BLE Scanner app, set up the device by adding "Advertiser," navigating to "BLE Device," and modifying the "Custom Services." Each service has a specific UUID, which is represented in the publish.py script. Change the service property of each to "Read/Write" for testing.
 
 **Project Structure**
 * subscribe.py: MQTT subscriber script that listens for EMG (Electromyography) data from the health monitoring device.
