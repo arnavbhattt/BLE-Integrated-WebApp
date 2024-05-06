@@ -14,6 +14,22 @@ global current_emg1, current_emg2
 current_emg1 = "NaN"
 current_emg2 = "NaN"
 
+#------------------------------------
+# Reading CSV Files
+# Replace CSV File Names as needed
+import pandas as pd
+
+df = pd.read_csv('sample_motion.csv')
+X_data = df['X']
+Y_data = df['Y']
+Z_data = df['Z']
+
+df_cdc = pd.read_csv('sample_strain.csv')
+
+df_emg = pd.read_csv('sample_emg.csv')
+
+
+
 external_stylesheets = [
     {
         "href": (
@@ -21,7 +37,7 @@ external_stylesheets = [
             "family=Lato:wght@400;700&display=swap"
         ),
         "rel": "stylesheet",
-    },
+    }
 ]
 
 # Initializing our Time (x) and EMG (y) data structures
@@ -38,6 +54,7 @@ mqttc = mqtt.Client()
 mqttc.connect("mqtt.eclipseprojects.io", 1883, 60)
 
 # Runs the publish.py script as a background process (to continuously deliver data)
+# Following Methods only needed for bluetooth stream data
 def run_publish():
     subprocess.Popen(['python3', 'publish.py'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
@@ -145,6 +162,7 @@ app.layout = html.Div(
                     ),
             ],
             className="card",
+            style={"height": "300px"}
         ),
                 html.Div([
                     dcc.Graph(id='ble-test1-graph', animate=False, config={'displayModeBar': False}, ),
@@ -157,9 +175,19 @@ app.layout = html.Div(
                         className="card"
                 ),
                 html.Div([
-                    dcc.Graph(id='ble-test2-graph', animate=False, config={'displayModeBar': False}, ),
+                    dcc.Graph(id='ble-test2-graph', animate=True, config={'displayModeBar': False}, ),
                     dcc.Interval(
                             id='ble-test2-interval',
+                            interval=1000,
+                            n_intervals=0,
+                       ),
+                    ],
+                        className="card"
+                ),
+                html.Div([
+                    dcc.Graph(id='ble-test3-graph', config={'displayModeBar': False}, ),
+                    dcc.Interval(
+                            id='ble-test3-interval',
                             interval=1000,
                             n_intervals=0,
                        ),
@@ -177,77 +205,80 @@ app.layout = html.Div(
 )
 
 # -----------------------------------------------------------------------------
-# Callback for updating temperature data
+# Callback for updating Sample Motion data
 # -----------------------------------------------------------------------------
 # Each graph requires a callback (add more depending on number of graphs)
 @app.callback(
     Output('ble-test1-graph', 'figure'),
-    Input('ble-test1-interval', 'n_intervals'),
+    [Input('ble-test1-graph', 'n_intervals'),
+     Input('ble-test1-graph', 'relayoutData')],
     State('ble-test1-graph', 'figure'),
 )
-def update_ble_test1_graph(n_intervals, current_figure):
-    global timeValues1, emg_Values1, current_emg1
-   
-    # Returns current state of figure of no data is available
-    if current_emg1 == "NaN":
-        current_emg1 = 0
-
-    # Updating the deque with new time and EMG values
-    current_time = datetime.now().strftime('%M:%S')
-    time_Values1.append(current_time)
-    emg_Values1.append(float(current_emg1))
-
-    # Updating the figure as per the graph display
-    fig_BLE_Test1 = go.Figure()
-    fig_BLE_Test1.add_trace(go.Scatter(x=list(time_Values1), y=list(emg_Values1), mode='lines', name='BLE Test Data (2)', line=dict(color='blue')))
-    fig_BLE_Test1.update_layout(
-        title='<b>BLE Test Data (1)<b>',
-        title_x=0.95,
-        xaxis=dict(title='<b>Time (s)<b>', range=[min(time_Values1), max(time_Values1)], tickmode='linear', tick0=0, dtick=5),
-        yaxis=dict(title='<b>EMG (mV)<b>', range=[1, 5], tickvals=[1, 2, 3, 4, 5], ticktext=['1 mV  ', '2 mV  ', '3 mV  ', '4 mV  ', '5 mV  '], title_standoff=10),
-        xaxis_showgrid=True,
-        yaxis_showgrid=True,
-        plot_bgcolor='rgba(0,0,0,0)',
-        xaxis_gridcolor='lightgray',
-        yaxis_gridcolor='lightgray',
-        height=300,
+def update_ble_test1_graph(n_intervals, relayout_data, current_figure):
+    fig = go.Figure(current_figure)
+    fig.data = []
+    fig.add_trace(go.Scatter(x=df.index, y=X_data, mode='lines', name='X'))
+    fig.add_trace(go.Scatter(x=df.index, y=Y_data, mode='lines', name='Y'))
+    fig.add_trace(go.Scatter(x=df.index, y=Z_data, mode='lines', name='Z'))
+    fig.update_layout(
+        title='Sample Motion Data',
+        xaxis=dict(title='Sample #'),
+        yaxis=dict(title='Value'),
     )
-    return fig_BLE_Test1
+    fig.update_layout(legend=dict(orientation='h', yanchor='top', y=1.1, xanchor='center', x=0.5))
+    
+    return fig
 
+# -----------------------------------------------------------------------------
+# Callback for updating Sample Strain data
+# -----------------------------------------------------------------------------
 @app.callback(
     Output('ble-test2-graph', 'figure'),
-    Input('ble-test2-interval', 'n_intervals'),
+    [Input('ble-test2-graph', 'n_intervals'),
+     Input('ble-test2-graph', 'relayoutData')],
     State('ble-test2-graph', 'figure'),
 )
-def update_ble_test1_graph(n_intervals, current_figure):
-    global timeValues2, emg_Values2, current_emg2
-   
-    # Returns current state of figure of no data is available
-    if current_emg2 == "NaN":
-        current_emg2 = 0
+def update_ble_test2_graph(n_intervals, relayout_data, current_figure):
+    fig = go.Figure(current_figure)
+    
+    # Clear existing traces
+    fig.data = []
+    
+    # Update graph data with CDC data and set legend label
+    fig.add_trace(go.Scatter(x=df_cdc.index, y=df_cdc['CDC'], mode='lines', name='CDC'))
+    
+    # Update layout
+    fig.update_layout(title='Sample Strain Data', xaxis_title='Sample #', yaxis_title='Value', showlegend=True)
+    
+    return fig
 
-    # Updating the deque with new time and EMG values
-    current_time = datetime.now().strftime('%M:%S')
-    time_Values2.append(current_time)
-    emg_Values2.append(float(current_emg2))
-
-    # Updating the figure as per the graph display
-    fig_BLE_Test2 = go.Figure()
-    fig_BLE_Test2.add_trace(go.Scatter(x=list(time_Values2), y=list(emg_Values2), mode='lines', name='BLE Test Data (2)', line=dict(color='red')))
-    fig_BLE_Test2.update_layout(
-        title='<b>BLE Test Data (2)<b>',
-        title_x=0.95,
-        xaxis=dict(title='<b>Time (s)<b>', range=[min(time_Values2), max(time_Values2)], tickmode='linear', tick0=0, dtick=5),
-        yaxis=dict(title='<b>EMG (mV)<b>', range=[1, 5], tickvals=[1, 2, 3, 4, 5], ticktext=['1 mV  ', '2 mV  ', '3 mV  ', '4 mV  ', '5 mV  '], title_standoff=10),
-        xaxis_showgrid=True,
-        yaxis_showgrid=True,
-        plot_bgcolor='rgba(0,0,0,0)',
-        xaxis_gridcolor='lightgray',
-        yaxis_gridcolor='lightgray',
-        height=300,
-    )
-    return fig_BLE_Test2
-
+# -----------------------------------------------------------------------------
+# Callback for updating Sample EMG data
+# -----------------------------------------------------------------------------
+@app.callback(
+    Output('ble-test3-graph', 'figure'),
+    [Input('ble-test3-graph', 'n_intervals'),
+     Input('ble-test3-graph', 'relayoutData')],
+    State('ble-test3-graph', 'figure'),
+)
+def update_ble_test3_graph(n_intervals, relayout_data, current_figure):
+    fig = go.Figure(current_figure)
+    
+    # Clear existing traces
+    fig.data = []
+    
+    # Update graph data with EMG data
+    for column in df_emg.columns[1:]:
+        fig.add_trace(go.Scatter(x=df_emg['Sample'], y=df_emg[column], mode='lines', name=f'Channel {column[-1]}'))
+    
+    # Update layout
+    fig.update_layout(title='Sample EMG Data', xaxis_title='Sample #', yaxis_title='Value',
+                      yaxis=dict(tickvals=[-5000000, -2500000, 0, 2500000, 5000000],
+                                 ticktext=['-5M', '-2.5M', '0', '2.5M', '5M']),
+                                 xaxis=dict(tickmode='linear', tick0=0, dtick=10000))
+    
+    
+    return fig
 # -----------------------------------------------------------------------------
 # Main function
 # -----------------------------------------------------------------------------

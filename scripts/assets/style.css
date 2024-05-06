@@ -23,6 +23,7 @@ html {
     grid-gap: 15px;
     padding-bottom: 0px;
     justify-content: center;
+    
 
     @media (min-width:1048px) {
         grid-template-columns: 2fr 1fr;
