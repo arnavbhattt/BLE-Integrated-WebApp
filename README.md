@@ -28,7 +28,7 @@ This project is a Python-based MQTT (Message Queuing Telemetry Transport) system
 6. While the application is running, it will display values from those certain UUIDs in real-time. To send data values from the "BLE Scanner" app, navigate the to specific service UUID, tap on "SetValue?", select "Text", and enter any decimal value (ideally from 0.00 to 5.00).
 
 ## **Functionality**
-*Application is used to visualize large data sets
+* Application is used to visualize large data sets
 ## Bluetooth Functionality ##
 * The application initially connects to the Bluetooth low-energy device using the Bleak Python library. This allows it to work with all BLE characteristics from that device.
 * BleakScanner then reads the value sent to the specific UUID.
@@ -38,6 +38,8 @@ This project is a Python-based MQTT (Message Queuing Telemetry Transport) system
 * This process is repeated until the user/device stops sending data.
 
 ## **Important Notes**
+* Tracing Data and Zooming in may be difficult on Chrome and Edge. Works best with Mozilla Firefox.
+## Bluetooth Functionality ##
 * Ensure that the BLE device is ready for connection when running subscribe.py.
 * Check the specified BLE device information and adjust it in the code if needed.
 * The package.json file manages the Node.js dependencies for running the web application.
