@@ -8,7 +8,7 @@ This project is a Python-based MQTT (Message Queuing Telemetry Transport) system
 ## **Getting Started**
 1. Clone or download the project to your local machine.
 2, Install the required Python packages by running `pip install -r requirements.txt`.
-3. Modify the CSV files in the subscribe.py file. Add the required CSV files to the project directory.
+3. Modify the CSV files in the subscribe.py file. Add/remove the required CSV files to the scripts folder in the project directory.
 
 ## **Project Structure**
 * subscribe.py: MQTT subscriber script that listens for EMG (Electromyography) data from the health monitoring device.
