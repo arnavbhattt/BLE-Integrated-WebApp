@@ -23,7 +23,6 @@ This project is a Python-based MQTT (Message Queuing Telemetry Transport) system
 2. Run `pip install -r requirements.txt` to install Python dependencies, if not already.
 3. Enter `cd scripts` to move to the scripts folder.
 4. Run `python3 subscribe.py` to run the program.
-   If there errors with csv files after running, move them into the scripts folder and try running again.
 ## Only For Bluetooth
 5. Before running the application, make sure that the device is turned on and ready to connect. Additionally, make sure the Device Name and all UUIDs in the publish.py script match the device's.
 6. While the application is running, it will display values from those certain UUIDs in real-time. To send data values from the "BLE Scanner" app, navigate the to specific service UUID, tap on "SetValue?", select "Text", and enter any decimal value (ideally from 0.00 to 5.00).
