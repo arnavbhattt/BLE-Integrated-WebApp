@@ -1,5 +1,5 @@
 # BLE Integrated Web App (Health Monitoring System)
-This project is a Python-based MQTT (Message Queuing Telemetry Transport) system for health monitoring. It leverages the Paho MQTT library for communication, Dash for creating a web-based dashboard, and Bleak for Bluetooth Low Energy (BLE) communication with a health monitoring device.
+This project is a Python-based MQTT (Message Queuing Telemetry Transport) system for health monitoring. It leverages the Paho MQTT library for communication, Dash for creating a web-based dashboard, and Bleak for Bluetooth Low Energy (BLE) communication with a health monitoring device. Read important notes below.
 
 ## **Prerequisites**
 1. Python 3.x is required to run the script.
